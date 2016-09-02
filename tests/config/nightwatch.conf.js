@@ -8,10 +8,12 @@ require('babel-core/register')({
   only: [/src/, /tests/, /config/]
 });
 require("babel-polyfill");
+const isoTools = require('../../src/server/isomorphic.tools');
+
 const hook = require('node-hook').hook;
 hook('.scss', (source, filename) => `console.log("${filename}");`);
 
-const testServer = require('../../src/server/server.js');
+
 let openServer;
 
 module.exports = (function(settings) {
@@ -26,10 +28,15 @@ module.exports = (function(settings) {
   settings.test_settings.default.globals = {
     TARGET_PATH : argv.target || `http://localhost:${process.env.PORT}`,
     before: function(done) {
-      openServer = testServer.listen(process.env.PORT, () => {
-        console.log(`listening at http://localhost:${process.env.PORT}`); // eslint-disable-line
-        done()
-      });
+      isoTools.server()
+        .then((assets) => {
+          const createServer = require('../../src/server/server'); //eslint-disable-line
+          const testServer = createServer(assets);
+          openServer = testServer.listen(process.env.PORT, () => {
+            console.log(`listening at http://localhost:${process.env.PORT}`); // eslint-disable-line
+            done()
+          });
+        });
     },
     after: function(done) {
       return openServer.close(done);
