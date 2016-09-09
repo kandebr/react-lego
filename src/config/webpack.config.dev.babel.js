@@ -1,6 +1,7 @@
 /*
 * The .babel.js in the file name is what makes this work as es6
 * */
+var IsomorphicLoaderPlugin = require("isomorphic-loader/lib/webpack-plugin");
 import webpack from 'webpack';
 import autoprefixer from 'autoprefixer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
@@ -20,6 +21,7 @@ export default {
     publicPath: '/'
   },
   plugins: [
+    new IsomorphicLoaderPlugin({}),
     new ExtractTextPlugin('[name].css'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
@@ -49,6 +51,15 @@ export default {
           'css?sourceMap',
           'postcss',
           'sass?sourceMap&outputStyle=expanded'].join('!'))
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/i,
+        loader: "file!isomorphic"
+      },
+      {
+        test: /\.svg$/,
+        include: [/src/],
+        loaders: ['svg-inline']
       }
     ]
   },

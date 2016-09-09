@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import express from 'express';
 import debug from 'debug';
 import compression from 'compression';
+
 import Error500 from './templates/Error500';
 import { routingApp, setRoutes } from './router';
 import webpackConfig from '../config/webpack.config.dev.babel';
@@ -37,7 +38,9 @@ Object.assign(express.response, {
   }
 });
 
-setRoutes(assets);
 server.use('/', routingApp);
 
-export default server;
+export default () => {
+  setRoutes(assets);
+  return server;
+};
