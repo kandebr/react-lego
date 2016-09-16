@@ -1,6 +1,3 @@
-require('babel-core/register')({
-  only: [/tests/, /src/, /config/]
-});
 require('babel-polyfill');
 const hook = require('node-hook').hook;
 hook('.scss', () => '');

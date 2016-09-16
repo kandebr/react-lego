@@ -2,8 +2,8 @@ const path = require('path'); // eslint-disable-line
 
 const ROOT = path.join(__dirname, '../..');
 const SRC = path.join(ROOT, 'src');
-const DIST = path.join(ROOT, 'dist');
 const COMPILED = path.join(ROOT, 'compiled');
+const DIST = path.join(COMPILED, 'dist');
 const APP = path.join(SRC, 'app');
 const SERVER = path.join(SRC, 'server');
 const PUBLIC = path.join(SERVER, 'public');
